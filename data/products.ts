@@ -12,7 +12,7 @@ export interface Product {
 export const products: Product[] = [
     {
         id: 'tg-usa-5',
-        name: 'Telegram Starter Pack (USA)',
+        name: 'Telegram 美国老号 (直登)',
         price: 15,
         description: '5个高质量美国老号，注册时长 > 6个月。适合新手尝试。',
         features: ['Session + JSON格式', '直登无验证', '质保 24 小时'],
@@ -22,17 +22,17 @@ export const products: Product[] = [
     },
     {
         id: 'tg-bulk-20',
-        name: 'Telegram Pro Bulk (20 Pcs)',
+        name: 'Telegram 协议号 (20个)',
         price: 50,
         description: '20个精选老号，适合工作室群发营销，高性价比。',
         features: ['单价低至 $2.5', '抗封耐用', '赠送群发软件教程'],
         type: 'Telegram',
-        badge: 'BEST VALUE',
+        badge: '超值推荐',
         paymentLink: 'https://google.com?q=buy-tg-bulk'
     },
     {
         id: 'x-blue',
-        name: 'Twitter Blue Verified',
+        name: 'Twitter 蓝标认证号',
         price: 25,
         description: '带有蓝标认证的推特账号，权重极高，发帖排名靠前。',
         features: ['Token 登录', '含 100+ 粉丝', '适合品牌官推'],
@@ -41,7 +41,7 @@ export const products: Product[] = [
     },
     {
         id: 'gpt-plus',
-        name: 'ChatGPT Plus (Shared)',
+        name: 'ChatGPT Plus 成品号',
         price: 9.9,
         description: 'GPT-4 共享账号，正规充值，秒发货。',
         features: ['GPT-4 模型', 'DALL·E 3 作图', '30天售后'],

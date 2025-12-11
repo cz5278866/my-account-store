@@ -12,21 +12,21 @@ export default function Home() {
       <section className="container mx-auto px-4 py-24 text-center">
         <div className="inline-flex items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-400 mb-6">
           <span className="flex h-2 w-2 rounded-full bg-blue-500 mr-2 animate-pulse"></span>
-          Now Supporting USDT TRC20 Payment
+          现已支持 USDT TRC20 自动支付
         </div>
         <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl mb-6 bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-600 bg-clip-text text-transparent">
-          Premium Digital Assets <br /> for Global Growth
+          全球优质数字资产交易平台
         </h1>
         <p className="mt-4 text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-          The #1 Marketplace for Aged Telegram, Verified X, and AI Accounts.
-          <br />Instant Delivery. 100% Anonymous.
+          全网最稳的 Telegram 老号、Twitter 蓝标号、AI 账号商店。
+          <br />24小时自动发货，匿名交易，售后无忧。
         </p>
         <div className="flex justify-center gap-4">
           <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-900/20">
-            View Products
+            查看商品
           </Button>
           <Button size="lg" variant="outline" className="text-white border-gray-700 hover:bg-gray-800 hover:text-white bg-transparent">
-            Contact Support
+            联系客服
           </Button>
         </div>
       </section>
@@ -35,9 +35,9 @@ export default function Home() {
       <section className="container mx-auto px-4 py-8 mb-16">
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            { icon: Zap, title: "Instant Delivery", desc: "Automated dispatch via email immediately after crypto payment confirmation." },
-            { icon: Lock, title: "Crypto Only", desc: "We accept USDT, BTC, LTC. No KYC required, protecting your privacy." },
-            { icon: Headphones, title: "24/7 Support", desc: "Login issues? Our team is ready to replace accounts within 1 hour." }
+            { icon: Zap, title: "极速发货", desc: "支付成功后系统自动将账号信息发送至您的邮箱，无需等待。" },
+            { icon: Lock, title: "加密支付", desc: "支持 USDT, BTC, LTC 等加密货币支付，无需 KYC，保护您的隐私。" },
+            { icon: Headphones, title: "售后保障", desc: "账号登录问题？联系客服，工作时间内 1 小时极速换号。" }
           ].map((feature, i) => (
             <Card key={i} className="bg-zinc-900/50 border-zinc-800 text-white hover:border-blue-500/50 transition-colors">
               <CardHeader>
@@ -55,8 +55,8 @@ export default function Home() {
       {/* Product List Section (NEW!) */}
       <section id="products" className="container mx-auto px-4 py-16 border-t border-zinc-800">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Best Selling Packages</h2>
-          <p className="text-gray-400">Choose the package that fits your marketing needs.</p>
+          <h2 className="text-3xl font-bold mb-4">热销商品推荐</h2>
+          <p className="text-gray-400">选择最适合您业务需求的优质账号。</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -91,7 +91,7 @@ export default function Home() {
               <CardFooter>
                 <Link href={`/products/${product.id}`} className="w-full">
                   <Button className="w-full bg-white text-black hover:bg-gray-200 font-bold">
-                    View Details
+                    查看详情
                   </Button>
                 </Link>
               </CardFooter>
