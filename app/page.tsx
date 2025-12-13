@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { products } from "@/data/products";
 import Link from "next/link";
-import { Check, Zap, Shield, Crown, Star, ArrowRight, Sparkles, Globe, Search, X, Send, Bot, Twitter, Instagram, Video, LayoutGrid, ChevronDown, ChevronUp } from "lucide-react";
+import { Check, Zap, Shield, Crown, Star, ArrowRight, Sparkles, Globe, Search, X, Send, Bot, Twitter, Instagram, Video, LayoutGrid, ChevronDown, ChevronUp, BookOpen } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
 
 const CONTACT_LINK = "https://t.me/YOUR_TG_ID";
@@ -68,8 +68,8 @@ export default function Home() {
     if (!content) return null;
     return (
       <div className={`relative flex flex-col p-6 rounded-3xl transition-all duration-300 h-full ${isRecommended
-          ? 'bg-white shadow-2xl shadow-blue-900/10 ring-2 ring-blue-600 scale-[1.02] z-10'
-          : 'bg-white shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1'
+        ? 'bg-white shadow-2xl shadow-blue-900/10 ring-2 ring-blue-600 scale-[1.02] z-10'
+        : 'bg-white shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1'
         }`}>
         {isRecommended && (
           <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg shadow-blue-600/20 flex items-center gap-1">
@@ -98,8 +98,8 @@ export default function Home() {
         </ul>
         <div className="mt-auto space-y-3">
           <a href={product.paymentLink} target="_blank" className={`w-full py-3.5 rounded-xl font-bold text-sm text-center transition-all flex items-center justify-center gap-2 shadow-lg ${isRecommended
-              ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/30'
-              : 'bg-gray-900 hover:bg-gray-800 text-white shadow-gray-200'
+            ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/30'
+            : 'bg-gray-900 hover:bg-gray-800 text-white shadow-gray-200'
             }`}>
             {isZH ? "立即购买" : "Buy Now"} <ArrowRight className="h-4 w-4" />
           </a>
@@ -189,6 +189,9 @@ export default function Home() {
             <button onClick={() => setShowOrderModal(true)} className="hidden md:flex text-base font-medium text-gray-500 hover:text-blue-600 transition-colors items-center gap-2">
               <Search className="h-5 w-5" /> {isZH ? "查单" : "Orders"}
             </button>
+            <Link href="/guides" className="hidden md:flex text-base font-medium text-gray-500 hover:text-blue-600 transition-colors items-center gap-2">
+              <BookOpen className="h-5 w-5" /> {isZH ? "教程" : "Guides"}
+            </Link>
             <a href={CONTACT_LINK} target="_blank" className="hidden md:flex text-base font-medium text-gray-500 hover:text-blue-600 transition-colors items-center gap-2">
               <Send className="h-5 w-5" /> {isZH ? "客服" : "Support"}
             </a>
