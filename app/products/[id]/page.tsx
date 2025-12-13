@@ -1,149 +1,157 @@
+"use client";
+
+import { useState } from "react";
 import { products } from "@/data/products";
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Check, ShieldCheck, Zap, Globe, Cpu } from "lucide-react";
+import { Check, ArrowLeft, Globe, Shield, Zap, Sparkles } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
 
-interface PageProps {
-    params: Promise<{
-        id: string;
-    }>;
-}
+export default function ProductPage() {
+    const params = useParams();
+    const { lang, toggleLang } = useLanguage();
 
-// 1. Generate Static Params for SSG
-export async function generateStaticParams() {
-    return products.map((product) => ({
-        id: product.id,
-    }));
-}
-
-// 2. Generate Metadata for SEO
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { id } = await params;
+    // Find product
+    // params can be null initially in some edge cases or tests, but usually defined in page
+    const id = params?.id;
     const product = products.find((p) => p.id === id);
 
     if (!product) {
-        return {
-            title: "Product Not Found",
-        };
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA]">
+                <div className="text-center">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4">Product not found</h2>
+                    <Link href="/" className="text-blue-600 hover:underline">
+                        Back to Home
+                    </Link>
+                </div>
+            </div>
+        );
     }
 
-    return {
-        title: `${product.name} - Instant Delivery | My Account Store`,
-        description: `Buy ${product.name} instantly. ${product.description} Secure crypto payment and 24/7 support.`,
-        openGraph: {
-            title: `${product.name} - Premium Digital Asset`,
-            description: product.description,
-        },
-    };
-}
-
-export default async function ProductPage({ params }: PageProps) {
-    const { id } = await params;
-    const product = products.find((p) => p.id === id);
-
-    if (!product) {
-        notFound();
-    }
+    const content = product.content[lang];
 
     return (
-        <div className="min-h-screen bg-black text-white selection:bg-blue-500/30 pb-20">
-            <div className="container mx-auto px-4 py-8">
-                {/* Back Button */}
-                <Link href="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to Store
-                </Link>
+        <div className="min-h-screen bg-[#FAFAFA] text-gray-900 font-[family-name:var(--font-geist-sans)]">
 
-                {/* Main Grid Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-                    {/* Left Column: Visual Representation */}
-                    <div className="relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                        <div className="relative aspect-square rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center overflow-hidden">
-                            {/* Visual Placeholder based on type */}
-                            {product.type === 'Telegram' && <Globe className="h-32 w-32 text-blue-500 opacity-80" />}
-                            {product.type === 'Twitter' && <Zap className="h-32 w-32 text-white opacity-80" />}
-                            {product.type === 'AI' && <Cpu className="h-32 w-32 text-green-500 opacity-80" />}
-                            {!['Telegram', 'Twitter', 'AI'].includes(product.type) && <ShieldCheck className="h-32 w-32 text-purple-500 opacity-80" />}
+            {/* 顶部导航 */}
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 h-16">
+                <div className="container mx-auto px-4 h-full flex items-center justify-between max-w-6xl">
+                    <Link href="/" className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                        <ArrowLeft className="h-4 w-4" />
+                        {lang === 'zh' ? '返回首页' : 'Back to Home'}
+                    </Link>
 
-                            <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur px-3 py-1 rounded text-xs font-mono text-zinc-400 border border-white/10">
-                                ID: {product.id}
+                    <button
+                        onClick={toggleLang}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors text-xs font-bold text-gray-600"
+                    >
+                        <Globe className="h-3.5 w-3.5" />
+                        {lang === 'zh' ? 'CN / EN' : 'EN / CN'}
+                    </button>
+                </div>
+            </nav>
+
+            <main className="container mx-auto px-4 pt-32 pb-20 max-w-6xl">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+
+                    {/* 左侧：产品详情 (Apple Style) */}
+                    <div className="lg:col-span-7 space-y-12">
+
+                        {/* 标题区 */}
+                        <div>
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-wider mb-6">
+                                <Sparkles className="h-3 w-3 fill-current" />
+                                {product.type} Series
+                            </div>
+                            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-6">
+                                {content.name}
+                            </h1>
+                            <p className="text-xl text-gray-500 leading-relaxed">
+                                {content.description}
+                            </p>
+                        </div>
+
+                        {/* 权益列表 */}
+                        <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+                            <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                <Zap className="h-5 w-5 text-amber-500" />
+                                {lang === 'zh' ? '核心权益' : 'Key Features'}
+                            </h3>
+                            <ul className="space-y-4">
+                                {(content.features || []).map((feature: string, idx: number) => (
+                                    <li key={idx} className="flex items-start gap-4">
+                                        <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                                            <Check className="h-3.5 w-3.5" />
+                                        </div>
+                                        <span className="text-gray-600">{feature}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* details: Trust Signals */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="bg-gray-50 rounded-2xl p-6 text-center">
+                                <Shield className="h-8 w-8 text-gray-400 mx-auto mb-3" />
+                                <div className="text-sm font-bold text-gray-900">{lang === 'zh' ? '安全保障' : 'Secure & Safe'}</div>
+                                <div className="text-xs text-gray-500 mt-1">{lang === 'zh' ? '30天无忧质保' : '30-Day Warranty'}</div>
+                            </div>
+                            <div className="bg-gray-50 rounded-2xl p-6 text-center">
+                                <Zap className="h-8 w-8 text-gray-400 mx-auto mb-3" />
+                                <div className="text-sm font-bold text-gray-900">{lang === 'zh' ? '自动发货' : 'Instant Delivery'}</div>
+                                <div className="text-xs text-gray-500 mt-1">{lang === 'zh' ? '支付后立即到账' : 'Get it seconds after pay'}</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {/* 右侧：购买卡片 (SaaS Style + Sticky) */}
+                    <div className="lg:col-span-5 relative">
+                        <div className="sticky top-32">
+                            <div className="bg-white rounded-3xl p-8 shadow-2xl shadow-gray-200/50 ring-1 ring-gray-100 border border-gray-100/50 backdrop-blur-xl relative overflow-hidden">
+
+                                {/* 装饰背景 */}
+                                <div className="absolute top-0 right-0 -mt-16 -mr-16 w-64 h-64 bg-gradient-to-br from-blue-50 to-purple-50 rounded-full blur-3xl opacity-60 pointer-events-none"></div>
+
+                                <div className="relative">
+                                    <div className="flex items-center justify-between mb-8">
+                                        <div>
+                                            <div className="text-sm text-gray-500 font-medium mb-1">{lang === 'zh' ? '当前价格' : 'Current Price'}</div>
+                                            <div className="flex items-base gap-1">
+                                                <span className="text-2xl font-bold text-gray-400 -mb-2">{content.currency === 'CNY' ? '¥' : '$'}</span>
+                                                <span className="text-6xl font-extrabold text-gray-900 tracking-tighter">{content.price}</span>
+                                            </div>
+                                        </div>
+                                        {product.badge && (
+                                            <div className="text-right">
+                                                <div className="inline-flex px-3 py-1 rounded-full bg-black text-white text-[10px] font-bold uppercase tracking-widest">
+                                                    {product.badge}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-4">
+                                        <a
+                                            href={product.paymentLink}
+                                            target="_blank"
+                                            className="block w-full py-4 rounded-2xl bg-gray-900 hover:bg-black text-white font-bold text-lg text-center transition-all shadow-xl shadow-gray-900/20 hover:scale-[1.02] active:scale-[0.98]"
+                                        >
+                                            {lang === 'zh' ? '立即购买' : 'Buy Now'}
+                                        </a>
+                                        <p className="text-center text-xs text-gray-400">
+                                            {lang === 'zh' ? '支持 支付宝 / 微信 / USDT' : 'Support Alipay / WeChat / USDT'}
+                                        </p>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
 
-                    {/* Right Column: Product Details */}
-                    <div className="flex flex-col justify-center">
-                        {product.badge && (
-                            <Badge className="w-fit mb-4 bg-blue-600 text-white hover:bg-blue-700">
-                                {product.badge}
-                            </Badge>
-                        )}
-
-                        <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">{product.name}</h1>
-                        <p className="text-xl text-gray-400 mb-8 leading-relaxed">{product.description}</p>
-
-                        <div className="flex items-baseline gap-2 mb-8">
-                            <span className="text-5xl font-bold text-white">${product.price}</span>
-                            <span className="text-gray-500 font-medium">USD</span>
-                        </div>
-
-                        <div className="flex gap-4 mb-10">
-                            <a href={product.paymentLink} target="_blank" rel="noopener noreferrer" className="flex-1">
-                                <Button size="lg" className="w-full h-14 text-lg bg-white text-black hover:bg-gray-200 font-bold shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                                    Buy Now & Instant Delivery
-                                </Button>
-                            </a>
-                        </div>
-
-                        {/* Feature List */}
-                        <Card className="bg-zinc-900/50 border-zinc-800">
-                            <CardContent className="pt-6">
-                                <h3 className="font-semibold text-lg mb-4 text-white">Features & Guarantees</h3>
-                                <ul className="space-y-3">
-                                    {product.features.map((feature, i) => (
-                                        <li key={i} className="flex items-start text-gray-300">
-                                            <Check className="h-5 w-5 text-green-500 mr-3 shrink-0" />
-                                            <span>{feature}</span>
-                                        </li>
-                                    ))}
-                                    <li className="flex items-start text-gray-300">
-                                        <ShieldCheck className="h-5 w-5 text-blue-500 mr-3 shrink-0" />
-                                        <span>Secure Crypto Payment (USDT/BTC/LTC)</span>
-                                    </li>
-                                </ul>
-                            </CardContent>
-                        </Card>
-                    </div>
                 </div>
-
-                {/* Detailed Description Section */}
-                <div className="border-t border-zinc-800 pt-16">
-                    <h2 className="text-2xl font-bold mb-6">Product Description</h2>
-                    <div className="prose prose-invert max-w-none text-gray-400">
-                        <p>
-                            Get immediate access to high-quality <strong>{product.name}</strong>.
-                            This product is verified and ready for use. We ensure 100% anonymity and security for all our customers.
-                        </p>
-                        <h3 className="text-white mt-6 mb-2">Delivery Process</h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li>Click "Buy Now" to proceed to the payment page.</li>
-                            <li>Complete the payment using your preferred cryptocurrency.</li>
-                            <li>Receive your account details via email instantly.</li>
-                        </ul>
-                        <h3 className="text-white mt-6 mb-2">Support</h3>
-                        <p>
-                            If you encounter any issues, our 24/7 support team is available to assist you.
-                            We offer a replacement guarantee for any non-working accounts within the warranty period.
-                        </p>
-                    </div>
-                </div>
-            </div>
+            </main>
         </div>
     );
 }

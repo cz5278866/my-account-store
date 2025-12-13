@@ -1,30 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// import { ClerkProvider } from '@clerk/nextjs'; // 如果您之前加了 Clerk，请取消注释
+import { LanguageProvider } from "@/components/LanguageProvider"; // 引入我们刚写的文件
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "账号商店 | Telegram老号_推特蓝标号_ChatGPT Plus成品号自动发货",
-  description: "全网最稳的数字资产交易平台。提供Telegram(TG)直登号、Twitter(X)蓝标认证号、ChatGPT Plus独享号。支持USDT/支付宝付款，24小时自动发货，售后无忧。",
-  keywords: "购买TG号, Telegram老号, 推特账号购买, ChatGPT Plus代充, 谷歌账号购买, 发卡网",
-  openGraph: {
-    title: "账号商店 | Telegram老号_推特蓝标号_ChatGPT Plus成品号自动发货",
-    description: "全网最稳的数字资产交易平台。提供Telegram(TG)直登号、Twitter(X)蓝标认证号、ChatGPT Plus独享号。支持USDT/支付宝付款，24小时自动发货，售后无忧。",
-    type: 'website',
+  title: "出海账号购买 | 全球优质账号交易平台",
+  description: "提供 Telegram, Twitter, TikTok, Instagram 优质老号、粉丝号。自动发货，售后无忧。",
+  icons: {
+    icon: '/', // 后面您可以换成自己的 logo
   },
 };
-
-import TelegramChat from "@/components/TelegramChat";
-import TawkToChat from "@/components/TawkToChat";
 
 export default function RootLayout({
   children,
@@ -32,14 +17,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-        <TelegramChat />
-        <TawkToChat />
+    // <ClerkProvider> // 如果有 Clerk，保留这个
+    <html lang="zh">
+      <body className="antialiased">
+        {/* 👇 关键：在这里包裹 LanguageProvider */}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
+    // </ClerkProvider>
   );
 }
